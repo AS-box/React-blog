@@ -10,7 +10,7 @@ import { Contact } from './pages/Contact';
 import { ArticleItem } from './components/ArticleItem';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, getDocs, collection } from 'firebase/firestore';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 
 
 // process.env~で先ほど.envファイルに入力したfirebaseConfigの値を参照しています
@@ -25,30 +25,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
 // NOTE >> Firebaseの初期化を行います。
-
-
+const data = {};
+const querySnapshot = await getDocs(collection(firestore, 'post'))
+querySnapshot.forEach((doc) => {
+  data[doc.id] = doc.data();
+})
 
 function App() {
   useEffect(() => {
 
-  
-    const readData = async () => {
-      const querySnapshot = await getDocs(collection(firestore, 'your-collection-name'));
-      querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-      });
-    };
-    readData();
-  },[])
+    
+  }, [])
   
   return (
     <div className="App">
       <Header></Header>
-      <Routes> {/*Routesで囲む*/}
+      <Routes> 
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/article/:id" element={<ArticleItem />} />
+        <Route path="/article/{doc.id}" element={<ArticleItem />} />
         <Route path="*" element={ <Home /> } />
       </Routes>
       <Footer></Footer>
