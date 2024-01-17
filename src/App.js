@@ -2,14 +2,14 @@
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 
-import { Route, Routes,  } from 'react-router-dom'
+import { Link, Route, Routes,  } from 'react-router-dom'
 import { Home } from './pages/Home';
 import './App.css';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
-import { ArticleItem } from './components/ArticleItem';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, getDocs, collection } from 'firebase/firestore';
+import { Article } from './components/Article';
 import { useEffect,useState } from 'react';
 
 
@@ -32,19 +32,17 @@ querySnapshot.forEach((doc) => {
 })
 
 function App() {
-  useEffect(() => {
-
-    
-  }, [])
+  const [blogData, setblogData] = useState(data);
+  
   
   return (
     <div className="App">
       <Header></Header>
       <Routes> 
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home data={blogData} />}  />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/article/{doc.id}" element={<ArticleItem />} />
+        <Route path="/article/:id" element={<Article />} />
         <Route path="*" element={ <Home /> } />
       </Routes>
       <Footer></Footer>

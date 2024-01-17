@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom"; 
-export const Home = () => {
+import { Link } from "react-router-dom"
+
+export const Home = (props) => {
 	return (
-		<div>
-			<ul>
-				<li><Link to='article/1'>記事1</Link></li>
-			</ul>
-		</div>
+		<ul>
+			{Object.values(props.data).map((post) => {
+				return <li key={post.id}>
+					<Link to={`article/${post.id}`} state={{post:post}}>{post.title}</Link>
+							</li>
+			})}
+		</ul>
 	)
 }
